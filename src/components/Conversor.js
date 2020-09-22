@@ -6,24 +6,58 @@ const Conversor = () => {
     const [tipoPeso, guardarTipoPeso] = useState("ARS");
     const [tipoDivisa, guardarTipoDivisa] = useState("USD");
 
-
     const [montoPesos, guardarMontoPesos] = useState(0);
     const [montoDivisa, guardarMontoDivisa] = useState(0);
     const apiKey = "3986110db82add6683b4";
     const urlListAllCountries = "https://free.currconv.com/api/v7/currencies?apiKey=3986110db82add6683b4";
 
 
-    const obtenerValorPeso = () => {
-        const api = fetch("https://www.dolarsi.com/api/api.php?type=valoresprincipales");
-        const valor = api.then(respuesta => respuesta.json());
-        valor.then(resultado => console.log(parseInt(resultado[1].casa.compra)));
+    const obtenerConversion = async (e) => {
+        const valorCampo = e.target.value;
+
+        const nombreCampo = e.target.name;
+        let resultado;
+        if (tipoPeso === "ARS") {
+            let api
+            nombreCampo === "montoPesos" ?
+                api = await fetch("https://free.currconv.com/api/v7/convert?q=" + tipoPeso + "_" + tipoDivisa + "&compact=ultra&apiKey=" + apiKey)
+                :
+                api = await fetch("https://free.currconv.com/api/v7/convert?q=" + tipoDivisa + "_" + tipoPeso + "&compact=ultra&apiKey=" + apiKey);
+
+            const respuesta = await api.json();
+            const response = Object.values(respuesta)[0];
+            resultado = parseInt(valorCampo) * response;
+        } else {
+            const api = await fetch("https://www.dolarsi.com/api/api.php?type=valoresprincipales");
+            const respuesta = await api.json();
+            let valorDolarParalelo = parseInt(respuesta[1].casa.compra);
+            console.log("valor Dolar paralelo", valorDolarParalelo);
+
+            const usdMercadoParalelo = parseInt(montoPesos) / valorDolarParalelo;
+            console.log("usd mercado paralelo", usdMercadoParalelo);
+
+            let api2;
+            nombreCampo === "montoPesos" ?
+                api2 = await fetch("https://free.currconv.com/api/v7/convert?q=USD_" + tipoDivisa + "&compact=ultra&apiKey=" + apiKey)
+                :
+                api2 = await fetch("https://free.currconv.com/api/v7/convert?q=" + tipoDivisa + "_USD&compact=ultra&apiKey=" + apiKey)
+
+            const respuesta2 = await api2.json();
+            const response = Object.values(respuesta2)[0];
+
+            console.log("response", response);
+            console.log("evento name", nombreCampo);
+            console.log("monto Divisa", parseInt(valorCampo));
+            nombreCampo === "montoPesos" ?
+                resultado = usdMercadoParalelo * response
+                :
+                resultado = valorDolarParalelo * (response * parseInt(valorCampo))
+        }
+        return resultado;
     }
 
     const handleOnClick = async () => {
-        const api = await fetch("https://free.currconv.com/api/v7/convert?q=" + tipoPeso + "_" + tipoDivisa + "&compact=ultra&apiKey=" + apiKey);
-        const respuesta = await api.json();
-        const response = Object.values(respuesta)[0];
-        let resultado = parseInt(montoPesos) * response;
+        let resultado = await obtenerConversion();
         guardarMontoDivisa(resultado);
     }
 
@@ -34,73 +68,24 @@ const Conversor = () => {
     }
 
     const handleMontoPesos = async (e) => {
-        const newvalue = e.target.value;
-        guardarMontoPesos(newvalue);
-
-        let resultado;
-        if (tipoPeso === "ARS") {
-            const api = await fetch("https://free.currconv.com/api/v7/convert?q=" + tipoPeso + "_" + tipoDivisa + "&compact=ultra&apiKey=" + apiKey);
-            const respuesta = await api.json();
-            const response = Object.values(respuesta)[0];
-            resultado = parseInt(montoPesos) * response;
-        } else {
-            const api = await fetch("https://www.dolarsi.com/api/api.php?type=valoresprincipales");
-            const respuesta = await api.json();
-            let valorPesoParalelo = parseInt(respuesta[1].casa.compra);
-
-            console.log("valor peso paralelo", valorPesoParalelo);
-            const usdMercadoParalelo = parseInt(montoPesos) / valorPesoParalelo;
-            console.log("usd mercado paralelo", usdMercadoParalelo);
-
-            const api2 = await fetch("https://free.currconv.com/api/v7/convert?q=USD_" + tipoDivisa + "&compact=ultra&apiKey=" + apiKey);
-            const respuesta2 = await api2.json();
-            const response = Object.values(respuesta2)[0];
-
-            console.log("response", response)
-            resultado = usdMercadoParalelo * response;
-        }
+        let newValue = e.target.value;
+        guardarMontoPesos(newValue);
+        let resultado = await obtenerConversion(e);
         guardarMontoDivisa(resultado);
-
-        // const api = await fetch("https://free.currconv.com/api/v7/convert?q=" + tipoPeso + "_" + tipoDivisa + "&compact=ultra&apiKey=" + apiKey);
-        // const respuesta = await api.json();
-        // const response = Object.values(respuesta)[0];
-        // let resultado = parseInt(montoPesos) * response;
-        // guardarMontoDivisa(resultado);
     }
 
-    const handleMontoDivisa = (e) => {
-        guardarMontoDivisa(e.target.value);
+    const handleMontoDivisa = async (e) => {
+        let newValue = e.target.value;
+        guardarMontoDivisa(newValue);
+        let resultado = await obtenerConversion(e);
+        guardarMontoPesos(resultado);
     }
 
     const handleTipoPeso = (e) => {
         guardarTipoPeso(e.target.value);
     }
-    const handleTipoDivisa = async (e) => {
-        const newvalue = e.target.value;
-        guardarTipoDivisa(newvalue);
-        let resultado;
-        if (tipoPeso === "ARS") {
-            const api = await fetch("https://free.currconv.com/api/v7/convert?q=" + tipoPeso + "_" + newvalue + "&compact=ultra&apiKey=" + apiKey);
-            const respuesta = await api.json();
-            const response = Object.values(respuesta)[0];
-            resultado = parseInt(montoPesos) * response;
-        } else {
-            const api = await fetch("https://www.dolarsi.com/api/api.php?type=valoresprincipales");
-            const respuesta = await api.json();
-            let valorPesoParalelo = parseInt(respuesta[1].casa.compra);
-
-            console.log("valor peso paralelo", valorPesoParalelo);
-            const usdMercadoParalelo = parseInt(montoPesos) / valorPesoParalelo;
-            console.log("usd mercado paralelo", usdMercadoParalelo);
-
-            const api2 = await fetch("https://free.currconv.com/api/v7/convert?q=USD_" + newvalue + "&compact=ultra&apiKey=" + apiKey);
-            const respuesta2 = await api2.json();
-            const response = Object.values(respuesta2)[0];
-
-            console.log("response", response)
-            resultado = usdMercadoParalelo * response;
-        }
-        guardarMontoDivisa(resultado);
+    const handleTipoDivisa = (e) => {
+        guardarTipoDivisa(e.target.value);
     }
 
 
@@ -133,7 +118,6 @@ const Conversor = () => {
             />
             <button onClick={handleOnClick}>Calcular</button>
         </Fragment>
-
     );
 }
 
