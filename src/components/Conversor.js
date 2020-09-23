@@ -14,7 +14,6 @@ const Conversor = () => {
 
     const obtenerConversion = async (e) => {
         const valorCampo = e.target.value;
-
         const nombreCampo = e.target.name;
         let resultado;
         if (tipoPeso === "ARS") {
@@ -31,10 +30,9 @@ const Conversor = () => {
             const api = await fetch("https://www.dolarsi.com/api/api.php?type=valoresprincipales");
             const respuesta = await api.json();
             let valorDolarParalelo = parseInt(respuesta[1].casa.compra);
-            console.log("valor Dolar paralelo", valorDolarParalelo);
 
             const usdMercadoParalelo = parseInt(montoPesos) / valorDolarParalelo;
-            console.log("usd mercado paralelo", usdMercadoParalelo);
+
 
             let api2;
             nombreCampo === "montoPesos" ?
@@ -44,10 +42,6 @@ const Conversor = () => {
 
             const respuesta2 = await api2.json();
             const response = Object.values(respuesta2)[0];
-
-            console.log("response", response);
-            console.log("evento name", nombreCampo);
-            console.log("monto Divisa", parseInt(valorCampo));
             nombreCampo === "montoPesos" ?
                 resultado = usdMercadoParalelo * response
                 :
@@ -55,6 +49,7 @@ const Conversor = () => {
         }
         return resultado;
     }
+
 
     const handleOnClick = async () => {
         let resultado = await obtenerConversion();
@@ -68,26 +63,72 @@ const Conversor = () => {
     }
 
     const handleMontoPesos = async (e) => {
-        let newValue = e.target.value;
-        guardarMontoPesos(newValue);
+        let valorCampo = e.target.value;
+        guardarMontoPesos(valorCampo);
         let resultado = await obtenerConversion(e);
-        guardarMontoDivisa(resultado);
+        guardarMontoDivisa(resultado % 1 === 0 ? resultado : parseFloat(resultado).toFixed(2));
     }
 
     const handleMontoDivisa = async (e) => {
         let newValue = e.target.value;
         guardarMontoDivisa(newValue);
         let resultado = await obtenerConversion(e);
-        guardarMontoPesos(resultado);
+        guardarMontoPesos(resultado % 1 === 0 ? resultado : parseFloat(resultado).toFixed(2));
     }
 
-    const handleTipoPeso = (e) => {
-        guardarTipoPeso(e.target.value);
-    }
-    const handleTipoDivisa = (e) => {
-        guardarTipoDivisa(e.target.value);
+    const handleTipoPeso = async (e) => {
+        let valorCampo = e.target.value;
+        guardarTipoPeso(valorCampo);
+
+        const nombreCampo = e.target.name;
+
+        let resultado;
+        if (nombreCampo === "ARS") {
+            const api = await fetch("https://free.currconv.com/api/v7/convert?q=" + nombreCampo + "_" + tipoDivisa + "&compact=ultra&apiKey=" + apiKey);
+
+            const respuesta = await api.json();
+            const response = Object.values(respuesta)[0];
+            resultado = parseInt(montoPesos) * response;
+        } else {
+            const api = await fetch("https://www.dolarsi.com/api/api.php?type=valoresprincipales");
+            const respuesta = await api.json();
+            let valorDolarParalelo = parseInt(respuesta[1].casa.compra);
+            const usdMercadoParalelo = parseInt(montoPesos) / valorDolarParalelo;
+            let api2 = await fetch("https://free.currconv.com/api/v7/convert?q=USD_" + tipoDivisa + "&compact=ultra&apiKey=" + apiKey);
+            const respuesta2 = await api2.json();
+            const response = Object.values(respuesta2)[0];
+            resultado = usdMercadoParalelo * response
+        }
+        guardarMontoDivisa(resultado % 1 === 0 ? resultado : parseFloat(resultado).toFixed(2));
     }
 
+    const handleTipoDivisa = async (e) => {
+        let valorCampo = e.target.value;
+        guardarTipoDivisa(valorCampo);
+        if (montoDivisa === 0) {
+
+        } else {
+            let resultado;
+            if (tipoPeso === "ARS") {
+                const api = await fetch("https://free.currconv.com/api/v7/convert?q=" + valorCampo + "_" + tipoPeso + "&compact=ultra&apiKey=" + apiKey);
+
+                const respuesta = await api.json();
+                const response = Object.values(respuesta)[0];
+                resultado = parseInt(montoPesos) * response;
+            } else {
+                const api = await fetch("https://www.dolarsi.com/api/api.php?type=valoresprincipales");
+                const respuesta = await api.json();
+                let valorDolarParalelo = parseInt(respuesta[1].casa.compra);
+                let api2 = await fetch("https://free.currconv.com/api/v7/convert?q=" + valorCampo + "_USD&compact=ultra&apiKey=" + apiKey);
+
+                const respuesta2 = await api2.json();
+                const response = Object.values(respuesta2)[0];
+
+                resultado = valorDolarParalelo * (response * parseInt(montoDivisa));
+            }
+            guardarMontoPesos(resultado % 1 === 0 ? resultado : parseFloat(resultado).toFixed(2));
+        }
+    }
 
     useEffect(() => {
         obtenerCodigoMonedas();
