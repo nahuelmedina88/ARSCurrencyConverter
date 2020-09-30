@@ -65,13 +65,13 @@ const Conversor = () => {
         return 0;
     }
 
-    const obtenerCodigoMonedas = async () => {
-        const api = await fetch(urlListAllCountries);
-        const respuesta = await api.json();
-        const countries = Object.values(respuesta.results);
-        const countriesSorted = countries.sort(compare);
-        updateCodPaises(countriesSorted);
-    }
+    // const obtenerCodigoMonedas = async () => {
+    //     const api = await fetch(urlListAllCountries);
+    //     const respuesta = await api.json();
+    //     const countries = Object.values(respuesta.results);
+    //     const countriesSorted = countries.sort(compare);
+    //     updateCodPaises(countriesSorted);
+    // }
 
     const handleMontoPesos = async (e) => {
         let valorCampo = e.target.value;
@@ -139,7 +139,14 @@ const Conversor = () => {
     }
 
     useEffect(() => {
-        // obtenerCodigoMonedas();
+        const obtenerCodigoMonedas = async () => {
+            const api = await fetch(urlListAllCountries);
+            const respuesta = await api.json();
+            const countries = Object.values(respuesta.results);
+            const countriesSorted = countries.sort(compare);
+            updateCodPaises(countriesSorted);
+        }
+        obtenerCodigoMonedas();
     }, [])
 
     return (
