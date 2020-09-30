@@ -1,0 +1,63 @@
+@media only screen and (min-width: 550px) {
+  .container {
+    height: 600px;
+    width: 100%;
+    padding-left: 20%;
+    padding-right: 20%;
+  }
+}
+
+@media only screen and(max-width:549px) {
+  .container {
+    height: 600px;
+    width: 100%;
+  }
+}
+
+.containerLogos {
+  height: 300px;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+
+  align-items: center;
+  justify-content: space-around;
+}
+
+.logos {
+  /* display: grid;
+  align-items: center;
+  justify-items: center;
+  grid-template-columns: 1fr 0.5fr 1fr; */
+}
+
+.logos:nth-child(2) {
+  /* justify-self: space-around; */
+}
+
+.logos > img {
+  height: 100px;
+}
+
+.form {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-gap: 20% 5%;
+  grid-template-rows: repeat(2, 1fr);
+  padding-left: 20%;
+  padding-right: 20%;
+  padding-bottom: 20%;
+}
+
+.boxPesos {
+  /* padding-left: 30%;
+  padding-right: 30%;
+  padding-bottom: 5%; */
+}
+
+.boxMonedaExtranjera {
+  /* padding-left: 30%;
+  padding-right: 30%;
+  padding-top: 5%; */
+}

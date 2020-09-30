@@ -1,4 +1,9 @@
 import React, { Fragment, useState, useEffect } from 'react';
+import styles from "./css/Conversor.module.css";
+import logoArg from "../images/argentinaFlag.png";
+import logoSwap from "../images/swap512.png";
+import logoEarth from "../images/earthWhite.png";
+
 
 const Conversor = () => {
 
@@ -31,7 +36,7 @@ const Conversor = () => {
             const respuesta = await api.json();
             let valorDolarParalelo = parseInt(respuesta[1].casa.compra);
 
-            const usdMercadoParalelo = parseInt(montoPesos) / valorDolarParalelo;
+            const usdMercadoParalelo = parseInt(valorCampo) / valorDolarParalelo;
 
 
             let api2;
@@ -50,16 +55,22 @@ const Conversor = () => {
         return resultado;
     }
 
-
-    const handleOnClick = async () => {
-        let resultado = await obtenerConversion();
-        guardarMontoDivisa(resultado);
+    const compare = (a, b) => {
+        if (a.currencyName < b.currencyName) {
+            return -1;
+        }
+        if (a.currencyName > b.currencyName) {
+            return 1;
+        }
+        return 0;
     }
 
     const obtenerCodigoMonedas = async () => {
         const api = await fetch(urlListAllCountries);
         const respuesta = await api.json();
-        updateCodPaises(Object.values(respuesta.results));
+        const countries = Object.values(respuesta.results);
+        const countriesSorted = countries.sort(compare);
+        updateCodPaises(countriesSorted);
     }
 
     const handleMontoPesos = async (e) => {
@@ -80,11 +91,11 @@ const Conversor = () => {
         let valorCampo = e.target.value;
         guardarTipoPeso(valorCampo);
 
-        const nombreCampo = e.target.name;
+        // const nombreCampo = e.target.name;
 
         let resultado;
-        if (nombreCampo === "ARS") {
-            const api = await fetch("https://free.currconv.com/api/v7/convert?q=" + nombreCampo + "_" + tipoDivisa + "&compact=ultra&apiKey=" + apiKey);
+        if (valorCampo === "ARS") {
+            const api = await fetch("https://free.currconv.com/api/v7/convert?q=" + valorCampo + "_" + tipoDivisa + "&compact=ultra&apiKey=" + apiKey);
 
             const respuesta = await api.json();
             const response = Object.values(respuesta)[0];
@@ -105,60 +116,81 @@ const Conversor = () => {
     const handleTipoDivisa = async (e) => {
         let valorCampo = e.target.value;
         guardarTipoDivisa(valorCampo);
-        if (montoDivisa === 0) {
 
+        let resultado;
+        if (tipoPeso === "ARS") {
+            const api = await fetch("https://free.currconv.com/api/v7/convert?q=" + valorCampo + "_ARS&compact=ultra&apiKey=" + apiKey);
+
+            const respuesta = await api.json();
+            const response = Object.values(respuesta)[0];
+            resultado = parseInt(montoDivisa) * response;
         } else {
-            let resultado;
-            if (tipoPeso === "ARS") {
-                const api = await fetch("https://free.currconv.com/api/v7/convert?q=" + valorCampo + "_" + tipoPeso + "&compact=ultra&apiKey=" + apiKey);
+            const api = await fetch("https://www.dolarsi.com/api/api.php?type=valoresprincipales");
+            const respuesta = await api.json();
+            let valorDolarParalelo = parseInt(respuesta[1].casa.compra);
+            let api2 = await fetch("https://free.currconv.com/api/v7/convert?q=" + valorCampo + "_USD&compact=ultra&apiKey=" + apiKey);
 
-                const respuesta = await api.json();
-                const response = Object.values(respuesta)[0];
-                resultado = parseInt(montoPesos) * response;
-            } else {
-                const api = await fetch("https://www.dolarsi.com/api/api.php?type=valoresprincipales");
-                const respuesta = await api.json();
-                let valorDolarParalelo = parseInt(respuesta[1].casa.compra);
-                let api2 = await fetch("https://free.currconv.com/api/v7/convert?q=" + valorCampo + "_USD&compact=ultra&apiKey=" + apiKey);
+            const respuesta2 = await api2.json();
+            const response = Object.values(respuesta2)[0];
 
-                const respuesta2 = await api2.json();
-                const response = Object.values(respuesta2)[0];
-
-                resultado = valorDolarParalelo * (response * parseInt(montoDivisa));
-            }
-            guardarMontoPesos(resultado % 1 === 0 ? resultado : parseFloat(resultado).toFixed(2));
+            resultado = valorDolarParalelo * (response * parseInt(montoDivisa));
         }
+        guardarMontoPesos(resultado % 1 === 0 ? resultado : parseFloat(resultado).toFixed(2));
     }
 
     useEffect(() => {
-        obtenerCodigoMonedas();
+        // obtenerCodigoMonedas();
     }, [])
 
     return (
         <Fragment>
-            <select onChange={handleTipoPeso}>
-                <option key="ARS" value="ARS">Peso Oficial</option>
-                <option key="ARSBLUE" value="ARSBLUE">Peso Alternativo</option>
-            </select>
-            <input
-                type="text"
-                name="montoPesos"
-                value={montoPesos}
-                placeholder="Ingrese monto en pesos..."
-                onChange={handleMontoPesos}
-            />
-            <select onChange={handleTipoDivisa}>
-                {codPaises.map((pais) => <option key={pais.id} value={pais.id}>{pais.currencyName}</option>)}
-            </select>
-            <input
-                type="text"
-                name="montoDivisa"
-                value={montoDivisa}
-                placeholder="Ingrese monto en moneda extranjera..."
-                onChange={handleMontoDivisa}
-            />
-            <button onClick={handleOnClick}>Calcular</button>
-        </Fragment>
+            <div className={styles.container}>
+
+                <div className={styles.containerLogos}>
+                    <div className={styles.logos}>
+                        <img src={logoArg} alt="Logo Argentina" />
+                    </div>
+                    <div className={styles.logos}>
+                        <img src={logoSwap} alt="Logo Swap" />
+                    </div>
+                    <div className={styles.logos}>
+                        <img src={logoEarth} alt="Logo Earth" />
+                    </div>
+                </div>
+                <div className={styles.form}>
+                    {/* <div className={styles.boxPesos}> */}
+                    <input className="form-control"
+                        type="number"
+                        name="montoPesos"
+                        value={montoPesos}
+                        placeholder="Monto en pesos..."
+                        onChange={handleMontoPesos}
+                        onFocus={(e) => e.target.value === "0" ? e.target.value = "" : e.target.value}
+                    />
+                    <select className="form-control"
+                        onChange={handleTipoPeso}>
+                        <option key="ARS" value="ARS">Peso Oficial</option>
+                        <option key="ARSBLUE" value="ARSBLUE">Peso Alternativo</option>
+                    </select>
+                    {/* </div> */}
+                    {/* <div className={styles.boxMonedaExtranjera}> */}
+                    <input className="form-control"
+                        type="number"
+                        name="montoDivisa"
+                        value={montoDivisa}
+                        placeholder="Monto en moneda extranjera..."
+                        onChange={handleMontoDivisa}
+                        onFocus={(e) => e.target.value === "0" ? e.target.value = "" : e.target.value}
+                    />
+                    <select className="form-control"
+                        onChange={handleTipoDivisa}>
+                        {codPaises.map((pais) => <option key={pais.id} value={pais.id}>{pais.currencyName}</option>)}
+                    </select>
+                </div>
+                {/* </div> */}
+                {/* <button onClick={handleOnClick}>Calcular</button> */}
+            </div>
+        </Fragment >
     );
 }
 
