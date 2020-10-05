@@ -1,5 +1,5 @@
 {
-  "homepage": "http://nahuelmedina88.github.io/ARSCurrencyConverter",
+  "homepage": "https://nahuelmedina88.github.io/ARSCurrencyConverter",
   "name": "conversorars",
   "version": "0.1.0",
   "private": true,
@@ -9,8 +9,10 @@
     "@testing-library/user-event": "^7.2.1",
     "bootstrap": "^4.5.2",
     "react": "^16.13.1",
+    "react-country-flag": "^2.3.0",
     "react-dom": "^16.13.1",
-    "react-scripts": "3.4.3"
+    "react-scripts": "3.4.3",
+    "react-select": "^3.1.0"
   },
   "scripts": {
     "predeploy": "npm run build",

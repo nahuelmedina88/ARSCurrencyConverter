@@ -3,13 +3,50 @@ import styles from "./css/Conversor.module.css";
 import logoArg from "../images/argentinaFlag.png";
 import logoSwap from "../images/swap512.png";
 import logoEarth from "../images/earthWhite.png";
+import Select, { components } from 'react-select';
+import ReactCountryFlag from "react-country-flag"
+
+
+
+
+
 
 
 const Conversor = () => {
 
+    const { Option } = components;
+    const IconOption = props => (
+        <Option {...props}>
+
+            <ReactCountryFlag
+
+                countryCode={(props.data.value).substring(0, 2)}
+                svg
+                style={{
+                    width: '2em',
+                    height: '2em',
+                    paddingRight: '0.3em'
+                }}
+                title="US"
+            />
+            {props.data.label}
+        </Option>
+    );
+
     const [codPaises, updateCodPaises] = useState([]);
     const [tipoPeso, guardarTipoPeso] = useState("ARS");
     const [tipoDivisa, guardarTipoDivisa] = useState("USD");
+    const options =
+        [{
+            id: "ARS",
+            value: "ARS",
+            label: "Peso Oficial"
+        }, {
+            id: "ARSBLUE",
+            value: "ARSBLUE",
+            label: "Peso Paralelo"
+        }
+        ];
 
     const [montoPesos, guardarMontoPesos] = useState(0);
     const [montoDivisa, guardarMontoDivisa] = useState(0);
@@ -88,7 +125,7 @@ const Conversor = () => {
     }
 
     const handleTipoPeso = async (e) => {
-        let valorCampo = e.target.value;
+        let valorCampo = e;
         guardarTipoPeso(valorCampo);
 
         // const nombreCampo = e.target.name;
@@ -113,14 +150,12 @@ const Conversor = () => {
         guardarMontoDivisa(resultado % 1 === 0 ? resultado : parseFloat(resultado).toFixed(2));
     }
 
-    const handleTipoDivisa = async (e) => {
-        let valorCampo = e.target.value;
+    const handleTipoDivisa = async (event) => {
+        let valorCampo = event.value;
         guardarTipoDivisa(valorCampo);
-
         let resultado;
         if (tipoPeso === "ARS") {
             const api = await fetch("https://free.currconv.com/api/v7/convert?q=" + valorCampo + "_ARS&compact=ultra&apiKey=" + apiKey);
-
             const respuesta = await api.json();
             const response = Object.values(respuesta)[0];
             resultado = parseInt(montoDivisa) * response;
@@ -144,7 +179,14 @@ const Conversor = () => {
             const respuesta = await api.json();
             const countries = Object.values(respuesta.results);
             const countriesSorted = countries.sort(compare);
-            updateCodPaises(countriesSorted);
+            //ingresado para react-select
+            const tempOptions = countriesSorted.map(option => ({
+                id: option.id,
+                value: option.id,
+                label: option.currencyName
+            }));
+            //end
+            updateCodPaises(tempOptions);
         }
         obtenerCodigoMonedas();
     }, [])
@@ -153,6 +195,7 @@ const Conversor = () => {
         <Fragment>
             <div className={styles.container}>
 
+                <h2 className={styles.title}>Conversor de moneda Argentina</h2>
                 <div className={styles.containerLogos}>
                     <div className={styles.logos}>
                         <img src={logoArg} alt="Logo Argentina" />
@@ -174,11 +217,19 @@ const Conversor = () => {
                         onChange={handleMontoPesos}
                         onFocus={(e) => e.target.value === "0" ? e.target.value = "" : e.target.value}
                     />
-                    <select className="form-control"
+                    {<Select
+                        options={options}
+                        onChange={handleTipoPeso}
+                        defaultValue={{ label: "Peso Oficial", value: 'ARS' }}//ARS by default
+                        components={{ Option: IconOption }}
+                    >
+                    </Select>
+                    }
+                    {/* <select className="form-control"
                         onChange={handleTipoPeso}>
                         <option key="ARS" value="ARS">Peso Oficial</option>
                         <option key="ARSBLUE" value="ARSBLUE">Peso Alternativo</option>
-                    </select>
+                    </select> */}
                     {/* </div> */}
                     {/* <div className={styles.boxMonedaExtranjera}> */}
                     <input className="form-control"
@@ -189,10 +240,19 @@ const Conversor = () => {
                         onChange={handleMontoDivisa}
                         onFocus={(e) => e.target.value === "0" ? e.target.value = "" : e.target.value}
                     />
-                    <select className="form-control"
+                    <Select
+                        options={codPaises}
+                        onChange={handleTipoDivisa}
+                        defaultValue={{ label: "United States Dollar", value: 'USD' }}//usd by default
+                        components={{ Option: IconOption }}
+                    ></Select>
+
+
+                    {/* <select className="form-control"
                         onChange={handleTipoDivisa}>
                         {codPaises.map((pais) => <option key={pais.id} value={pais.id}>{pais.currencyName}</option>)}
-                    </select>
+                    </select> */}
+
                 </div>
                 {/* </div> */}
                 {/* <button onClick={handleOnClick}>Calcular</button> */}
