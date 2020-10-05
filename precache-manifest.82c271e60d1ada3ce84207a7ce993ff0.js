@@ -1,27 +1,27 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "0290becfe4e179e04a64bb484a1805fc",
+    "revision": "bfe1d5d6397d0c0b02e9645e65bb79ac",
     "url": "/ARSCurrencyConverter/index.html"
   },
   {
-    "revision": "f9d346c79bec444e9901",
+    "revision": "3a46acd2ca6d56fa2d8f",
     "url": "/ARSCurrencyConverter/static/css/2.d9ad5f5c.chunk.css"
   },
   {
-    "revision": "13b4bdaa289434a191cf",
-    "url": "/ARSCurrencyConverter/static/css/main.b824292c.chunk.css"
+    "revision": "d7b424e3e1fc742a8865",
+    "url": "/ARSCurrencyConverter/static/css/main.3548088e.chunk.css"
   },
   {
-    "revision": "f9d346c79bec444e9901",
-    "url": "/ARSCurrencyConverter/static/js/2.1537ea36.chunk.js"
+    "revision": "3a46acd2ca6d56fa2d8f",
+    "url": "/ARSCurrencyConverter/static/js/2.c344ffe9.chunk.js"
   },
   {
     "revision": "e88a3e95b5364d46e95b35ae8c0dc27d",
-    "url": "/ARSCurrencyConverter/static/js/2.1537ea36.chunk.js.LICENSE.txt"
+    "url": "/ARSCurrencyConverter/static/js/2.c344ffe9.chunk.js.LICENSE.txt"
   },
   {
-    "revision": "13b4bdaa289434a191cf",
-    "url": "/ARSCurrencyConverter/static/js/main.ffe74c8f.chunk.js"
+    "revision": "d7b424e3e1fc742a8865",
+    "url": "/ARSCurrencyConverter/static/js/main.4a311eb3.chunk.js"
   },
   {
     "revision": "d8983187b646762ae96b",

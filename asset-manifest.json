@@ -1,26 +1,26 @@
 {
   "files": {
-    "main.css": "/ARSCurrencyConverter/static/css/main.b824292c.chunk.css",
-    "main.js": "/ARSCurrencyConverter/static/js/main.ffe74c8f.chunk.js",
-    "main.js.map": "/ARSCurrencyConverter/static/js/main.ffe74c8f.chunk.js.map",
+    "main.css": "/ARSCurrencyConverter/static/css/main.3548088e.chunk.css",
+    "main.js": "/ARSCurrencyConverter/static/js/main.4a311eb3.chunk.js",
+    "main.js.map": "/ARSCurrencyConverter/static/js/main.4a311eb3.chunk.js.map",
     "runtime-main.js": "/ARSCurrencyConverter/static/js/runtime-main.2b45c688.js",
     "runtime-main.js.map": "/ARSCurrencyConverter/static/js/runtime-main.2b45c688.js.map",
     "static/css/2.d9ad5f5c.chunk.css": "/ARSCurrencyConverter/static/css/2.d9ad5f5c.chunk.css",
-    "static/js/2.1537ea36.chunk.js": "/ARSCurrencyConverter/static/js/2.1537ea36.chunk.js",
-    "static/js/2.1537ea36.chunk.js.map": "/ARSCurrencyConverter/static/js/2.1537ea36.chunk.js.map",
+    "static/js/2.c344ffe9.chunk.js": "/ARSCurrencyConverter/static/js/2.c344ffe9.chunk.js",
+    "static/js/2.c344ffe9.chunk.js.map": "/ARSCurrencyConverter/static/js/2.c344ffe9.chunk.js.map",
     "index.html": "/ARSCurrencyConverter/index.html",
-    "precache-manifest.1ef6a44f3df5a7425d08ebfd42ecdef2.js": "/ARSCurrencyConverter/precache-manifest.1ef6a44f3df5a7425d08ebfd42ecdef2.js",
+    "precache-manifest.82c271e60d1ada3ce84207a7ce993ff0.js": "/ARSCurrencyConverter/precache-manifest.82c271e60d1ada3ce84207a7ce993ff0.js",
     "service-worker.js": "/ARSCurrencyConverter/service-worker.js",
     "static/css/2.d9ad5f5c.chunk.css.map": "/ARSCurrencyConverter/static/css/2.d9ad5f5c.chunk.css.map",
-    "static/css/main.b824292c.chunk.css.map": "/ARSCurrencyConverter/static/css/main.b824292c.chunk.css.map",
-    "static/js/2.1537ea36.chunk.js.LICENSE.txt": "/ARSCurrencyConverter/static/js/2.1537ea36.chunk.js.LICENSE.txt",
+    "static/css/main.3548088e.chunk.css.map": "/ARSCurrencyConverter/static/css/main.3548088e.chunk.css.map",
+    "static/js/2.c344ffe9.chunk.js.LICENSE.txt": "/ARSCurrencyConverter/static/js/2.c344ffe9.chunk.js.LICENSE.txt",
     "static/media/argentinaFlag.png": "/ARSCurrencyConverter/static/media/argentinaFlag.21379b09.png"
   },
   "entrypoints": [
     "static/js/runtime-main.2b45c688.js",
     "static/css/2.d9ad5f5c.chunk.css",
-    "static/js/2.1537ea36.chunk.js",
-    "static/css/main.b824292c.chunk.css",
-    "static/js/main.ffe74c8f.chunk.js"
+    "static/js/2.c344ffe9.chunk.js",
+    "static/css/main.3548088e.chunk.css",
+    "static/js/main.4a311eb3.chunk.js"
   ]
 }
