@@ -1,15 +1,10 @@
 import React, { Fragment, useState, useEffect } from 'react';
 import styles from "./css/Conversor.module.css";
-import logoArg from "../images/argentinaFlag.png";
-import logoSwap from "../images/swap512.png";
-import logoEarth from "../images/earthWhite.png";
+// import logoArg from "../images/argentinaFlag.png";
+// import logoSwap from "../images/swap512.png";
+// import logoEarth from "../images/earthWhite.png";
 import Select, { components } from 'react-select';
 import ReactCountryFlag from "react-country-flag"
-
-
-
-
-
 
 
 const Conversor = () => {
@@ -31,6 +26,7 @@ const Conversor = () => {
             />
             {props.data.label}
         </Option>
+
     );
 
     const [codPaises, updateCodPaises] = useState([]);
@@ -195,20 +191,8 @@ const Conversor = () => {
         <Fragment>
             <div className={styles.container}>
 
-                <h2 className={styles.title}>Conversor de moneda Argentina</h2>
-                <div className={styles.containerLogos}>
-                    <div className={styles.logos}>
-                        <img src={logoArg} alt="Logo Argentina" />
-                    </div>
-                    <div className={styles.logos}>
-                        <img src={logoSwap} alt="Logo Swap" />
-                    </div>
-                    <div className={styles.logos}>
-                        <img src={logoEarth} alt="Logo Earth" />
-                    </div>
-                </div>
                 <div className={styles.form}>
-                    {/* <div className={styles.boxPesos}> */}
+
                     <input className="form-control"
                         type="number"
                         name="montoPesos"
@@ -230,8 +214,7 @@ const Conversor = () => {
                         <option key="ARS" value="ARS">Peso Oficial</option>
                         <option key="ARSBLUE" value="ARSBLUE">Peso Alternativo</option>
                     </select> */}
-                    {/* </div> */}
-                    {/* <div className={styles.boxMonedaExtranjera}> */}
+
                     <input className="form-control"
                         type="number"
                         name="montoDivisa"
@@ -254,8 +237,6 @@ const Conversor = () => {
                     </select> */}
 
                 </div>
-                {/* </div> */}
-                {/* <button onClick={handleOnClick}>Calcular</button> */}
             </div>
         </Fragment >
     );

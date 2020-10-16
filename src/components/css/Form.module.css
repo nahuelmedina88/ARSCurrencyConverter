@@ -1,13 +1,12 @@
-/* 
 @media only screen and (min-width: 550px) {
   .form {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    grid-gap: 20% 5%;
+    grid-gap: 10% 5%;
     grid-template-rows: repeat(2, 1fr);
     padding-left: 10%;
     padding-right: 10%;
-    padding-bottom: 20%;
+    padding-bottom: 5%;
   }
 }
 
@@ -27,10 +26,10 @@
   .form {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    grid-gap: 20% 5%;
+    grid-gap: 10% 5%;
     grid-template-rows: repeat(2, 1fr);
     padding-left: 0%;
     padding-right: 0%;
-    padding-bottom: 20%;
+    padding-bottom: 5%;
   }
-} */
+}
